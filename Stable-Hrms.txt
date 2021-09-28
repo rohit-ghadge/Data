@@ -1,0 +1,194 @@
+package Hrms;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class LogIn_HRMS extends HRMS_DataProvider {
+
+    WebDriver driver;
+
+ //****************  launchBrowser ****************************
+    @BeforeTest
+    public void launchBrowser() 
+    {
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
+		// Implicit wait timeout for 3 Minute
+		driver.manage().timeouts().implicitlyWait(Duration.ofMinutes(3));
+        driver.get("https://hrms.vinsys.live/Login");
+        driver.manage().window().maximize();
+
+    }
+    //****************  Login Page ****************************
+
+    @Test(priority = 1, dataProvider = "LoginScenario")
+    public void Login_TC_02(String username, String password, String expresult) {
+        System.out.println("TestCase02");
+        System.out.println(username);
+        driver.findElement(By.xpath("//input[@placeholder='Email']")).sendKeys(username);
+        System.out.println(password);
+        driver.findElement(By.xpath("//input[@placeholder='Password']")).sendKeys(password);
+        driver.findElement(By.xpath("//button[text()='Sign In']")).click();
+        String ExpRes = driver.getTitle();
+        Assert.assertEquals(ExpRes, expresult);
+    }
+
+    //****************  Click on More Details  ****************************
+    @Test(priority = 2)
+    public void Login_TC_02() throws InterruptedException
+    {
+    	Thread.sleep(1000);
+
+        driver.findElement(By.xpath("//a[text()='More Details']")).click();
+    }
+    //****************  Click on Passport Details  ****************************
+
+    @Test(priority = 3)
+    public void Login_TC_03() throws InterruptedException
+    {
+    	Thread.sleep(1000);
+
+    	 driver.findElement(By.xpath("//a[@href=\'#PassportDetails\']")).click();
+
+    }
+    //****************  Entering Passport Number ****************************
+
+    @Test(priority = 4)
+    public void Login_TC_04() throws InterruptedException
+    {
+    	Thread.sleep(1000);
+
+    	 driver.findElement(By.name("wcanAdd_passportNumber")).click();
+    	 driver.findElement(By.name("wcanAdd_passportNumber")).clear();
+    	 driver.findElement(By.name("wcanAdd_passportNumber")).sendKeys("123456789");
+
+    }
+    //****************  Passing middle name ****************************
+  
+    @Test(priority = 5)
+    public void Login_TC_05() throws InterruptedException
+    {
+    	Thread.sleep(1000);
+
+   	 driver.findElement(By.name("wcanAdd_passportMiddleName")).click();
+   	 driver.findElement(By.name("wcanAdd_passportMiddleName")).clear();
+	 driver.findElement(By.name("wcanAdd_passportMiddleName")).sendKeys("Bramhadev");
+
+    }
+    //****************  passing Passport first Name ****************************
+
+    @Test(priority = 6)
+    public void Login_TC_06() throws InterruptedException
+    {
+    	Thread.sleep(1000);
+
+       driver.findElement(By.name("wcanAdd_passportFirstName")).click();
+       driver.findElement(By.name("wcanAdd_passportFirstName")).clear();
+       driver.findElement(By.name("wcanAdd_passportFirstName")).sendKeys("Rohit");
+
+    }
+    
+    //****************  passing Passport Last Name ****************************
+
+    @Test(priority = 7)
+    public void Login_TC_07() throws InterruptedException
+    {
+    	Thread.sleep(1000);
+
+        driver.findElement(By.name("wcanAdd_passportLastName")).click();
+        driver.findElement(By.name("wcanAdd_passportLastName")).clear();
+        driver.findElement(By.name("wcanAdd_passportLastName")).sendKeys("Ghadge");
+
+    }
+    
+    //****************  Passing Date of issue ****************************
+
+    @Test(priority = 8)
+    public void Login_TC_08() throws InterruptedException
+    {
+    	Thread.sleep(1000);
+
+    	//click on first Calendar box
+    	 driver.findElement(By.xpath("//input[@name='wcanAdd_passportLastName']//following::div[1]/div[1]")).click();
+    	
+/*    	 String month = driver.findElement(By.className("headerlabelbtn")).getText();
+    	 System.out.println("Month : "+month);
+    	 String year = driver.findElement(By.className("headerlabelbtn yearlabel")).getText();
+    	 System.out.println(year);*/
+    	 
+    	driver.findElement(By.xpath("//span[text()='Today']")).click();
+    }
+    //****************  Passing Date of Expire ****************************
+
+    @Test(priority = 10)
+    public void Login_TC_10() throws InterruptedException
+    {
+    	Thread.sleep(1000);
+
+   	 driver.findElement(By.xpath("//input[@name='wcanAdd_passportplaceOfIssue']//following::div[1]/div[1]")).click();
+
+    }
+    
+    //****************  Passing Place of issue ****************************
+
+    @Test(priority = 11)
+    public void Login_TC_11() throws InterruptedException
+    {
+    	Thread.sleep(1000);
+
+        driver.findElement(By.name("wcanAdd_passportplaceOfIssue")).click();
+        driver.findElement(By.name("wcanAdd_passportplaceOfIssue")).clear();
+        driver.findElement(By.name("wcanAdd_passportplaceOfIssue")).sendKeys("Pune");
+
+    }
+    
+    //****************  Selecting ECNR Radio Button ****************************
+
+    @Test(priority = 12)
+    public void Login_TC_12() throws InterruptedException
+    {
+    	Thread.sleep(1000);
+
+        driver.findElement(By.name("wcanAdd_passportecnr")).click();
+    }
+    
+    //****************  Submit the form  ****************************
+
+    @Test(priority = 13)
+    public void Login_TC_13() throws InterruptedException
+    {
+    	Thread.sleep(1000);
+
+        driver.findElement(By.xpath("//*[@id=\"PassportDetails\"]/div[1]/form/div[2]/div[1]/div/button[1]")).click();
+
+    }
+    
+    //****************  Click Ok inside Alert Box ****************************
+
+    @Test(priority = 14)
+    public void Login_TC_14() throws InterruptedException
+    {
+    	//Thread.sleep(1000);
+    	   if (driver.getWindowHandles().size() > 1) {
+    	driver.switchTo().alert().accept();
+    	   }
+
+    }
+    
+    //****************  teminate the browser  ****************************
+     @AfterMethod
+     public void closeBrowser() {
+
+    // driver.quit();
+     }
+
+}
